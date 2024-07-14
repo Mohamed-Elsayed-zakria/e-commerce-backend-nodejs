@@ -14,8 +14,9 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use("/categories", category);
+app.use("/api/v1/categories/", category);
 
 const port = process.env.PORT;
 

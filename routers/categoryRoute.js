@@ -1,5 +1,6 @@
 const {
   getCategories,
+  getOneCategory,
   createCategory,
   updateCategory,
   deleteCategory,
@@ -8,7 +9,9 @@ const {
 const express = require("express");
 const router = express.Router();
 
+// routes
 router.get("/", getCategories);
+router.get("/:id", getOneCategory);
 router.post("/", createCategory);
 router.put("/:id", updateCategory);
 router.delete("/:id", deleteCategory);
