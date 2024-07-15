@@ -2,12 +2,18 @@ const validatorMiddleware = require('../../middleware/validatorMiddleware');
 const { check } = require('express-validator');
 
 exports.getOneCategoryValidator = [
-    check('id').isMongoId().withMessage('Invalid category id format'),
+    check('id')
+        .notEmpty()
+        .withMessage('category id is required')
+        .isMongoId()
+        .withMessage('Invalid category id format'),
     validatorMiddleware,
 ]
 
 exports.createCategoryValidator = [
-    check('name').notEmpty().withMessage('Category name is required')
+    check('name')
+        .notEmpty()
+        .withMessage('Category name is required')
         .isLength({ min: 3 })
         .withMessage('Category name must be at least 3 characters')
         .isLength({ max: 32 })
@@ -16,11 +22,22 @@ exports.createCategoryValidator = [
 ]
 
 exports.updateCategoryValidator = [
-    check('id').isMongoId().withMessage('Invalid category id format'),
+    check('id')
+        .notEmpty()
+        .withMessage('category id is required')
+        .isMongoId()
+        .withMessage('Invalid category id format'),
+    check('name')
+        .notEmpty()
+        .withMessage('Category name is required'),
     validatorMiddleware,
 ]
 
 exports.deleteCategoryValidator = [
-    check('id').isMongoId().withMessage('Invalid category id format'),
+    check('id')
+        .notEmpty()
+        .withMessage('category id is required')
+        .isMongoId()
+        .withMessage('Invalid category id format'),
     validatorMiddleware,
 ]
