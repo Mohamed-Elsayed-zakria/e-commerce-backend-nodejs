@@ -12,6 +12,7 @@ const app = express();
 // routes
 const category = require("./routers/categoryRoute");
 const subCategory = require("./routers/subCategoryRoute");
+const brand = require("./routers/brandRoute");
 
 const port = process.env.PORT || 8000;
 
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/categories/", category);
 app.use("/api/v1/subCategories/", subCategory);
+app.use("/api/v1/brands/", brand);
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Can't find ${req.originalUrl} on this server`, 404));
