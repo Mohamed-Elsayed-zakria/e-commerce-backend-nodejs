@@ -9,10 +9,11 @@ const connectDB = require("./config/database");
 const express = require("express");
 const app = express();
 
-// routes
-const category = require("./routers/categoryRoute");
-const subCategory = require("./routers/subCategoryRoute");
-const brand = require("./routers/brandRoute");
+// routes paths
+const categoryRoute = require("./routers/categoryRoute");
+const subCategoryRoute = require("./routers/subCategoryRoute");
+const brandRoute = require("./routers/brandRoute");
+const ProductRoute = require("./routers/productRoute");
 
 const port = process.env.PORT || 8000;
 
@@ -27,13 +28,15 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// routes
 app.get("/", (req, res) => {
   res.send("E-commerce-v1");
 });
 
-app.use("/api/v1/categories/", category);
-app.use("/api/v1/subCategories/", subCategory);
-app.use("/api/v1/brands/", brand);
+app.use("/api/v1/categories/", categoryRoute);
+app.use("/api/v1/subCategories/", subCategoryRoute);
+app.use("/api/v1/brands/", brandRoute);
+app.use("/api/v1/products/", ProductRoute);
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Can't find ${req.originalUrl} on this server`, 404));

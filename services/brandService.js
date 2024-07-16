@@ -4,7 +4,7 @@ const ApiError = require("../utils/apiError");
 const slugify = require("slugify");
 
 // @desc get all brands
-// @route GET /api/v1/categories/
+// @route GET /api/v1/brands/
 // @access public
 exports.getAllBrands = asyncHandler(async (req, res) => {
   const page = req.query.page * 1 || 1;
@@ -19,7 +19,7 @@ exports.getAllBrands = asyncHandler(async (req, res) => {
 });
 
 // @desc get one brand
-// @route GET /api/v1/categories/:id
+// @route GET /api/v1/brands/:id
 // @access public
 exports.getOneBrand = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
@@ -31,7 +31,7 @@ exports.getOneBrand = asyncHandler(async (req, res, next) => {
 });
 
 // @desc create brand
-// @route POST /api/v1/categories/
+// @route POST /api/v1/brands/
 // @access private
 exports.createBrand = asyncHandler(async (req, res) => {
   const { name } = req.body;
@@ -43,7 +43,7 @@ exports.createBrand = asyncHandler(async (req, res) => {
 });
 
 // @desc update brand
-// @route PUT /api/v1/categories/:id
+// @route PUT /api/v1/brands/:id
 // @access private
 exports.updateBrand = asyncHandler(async (req, res, next) => {
   const { name } = req.body;
@@ -63,7 +63,7 @@ exports.updateBrand = asyncHandler(async (req, res, next) => {
 });
 
 // @desc delete brand
-// @route DELETE /api/v1/categories/:id
+// @route DELETE /api/v1/brands/:id
 // @access private
 exports.deleteBrand = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
