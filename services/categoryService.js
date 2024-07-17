@@ -8,7 +8,7 @@ const slugify = require("slugify");
 // @access public
 exports.getCategories = asyncHandler(async (req, res) => {
   const page = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 10;
+  const limit = req.query.limit * 1 || 20;
   const skip = (page - 1) * limit;
   const categories = await CategoryModel.find().skip(skip).limit(limit);
   res.status(200).json({
