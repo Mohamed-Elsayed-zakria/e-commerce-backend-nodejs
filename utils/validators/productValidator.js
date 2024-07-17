@@ -1,5 +1,7 @@
 const validatorMiddleware = require('../../middleware/validatorMiddleware');
 const { check } = require('express-validator');
+const CategoryModel = require('../../models/categoryModel');
+const SubCategoryModel = require('../../models/subCategoryModel');
 
 exports.createProductValidator = [
     check('title')
@@ -36,7 +38,7 @@ exports.createProductValidator = [
         .withMessage('product priceAfterDiscount must be numeric')
         .toFloat()
         .custom((value, { req }) => {
-            if (value < req.body.price) {
+            if (value > req.body.price) {
                 throw new Error('product priceAfterDiscount must be greater than product price')
             }
             return true;
@@ -56,7 +58,38 @@ exports.createProductValidator = [
         .notEmpty()
         .withMessage('product category is required')
         .isMongoId()
-        .withMessage('Invalid category id format'),
+        .withMessage('Invalid category id format')
+        .custom((categoryId) => {
+            return CategoryModel.findById(categoryId).then((category) => {
+                if (!category) {
+                    return Promise.reject(new Error(`Invalid category id ${categoryId}`))
+                }
+            })
+        }),
+    check('subCategories')
+        .optional()
+        .isArray()
+        .withMessage('product subCategories must be an array')
+        .isMongoId()
+        .withMessage('Invalid subCategory id format')
+        .custom((subCategories) => {
+            return SubCategoryModel.find({ _id: { $exists: true, $in: subCategories } }).then((result) => {
+                if (subCategories.length !== result.length) {
+                    return Promise.reject(new Error('Invalid subCategory id'))
+                }
+            })
+        }).custom((subCategories, { req }) => {
+            return SubCategoryModel.find({ category: req.body.category }).then((result) => {
+                const subCategoriesIds = result.map(subCategory => subCategory._id.toString());
+                if (!subCategories.every(subCategory => subCategoriesIds.includes(subCategory))) {
+                    return Promise.reject(new Error('the subCategory does not belong to the category'))
+                }
+            })
+        }),
+    check('brand')
+        .optional()
+        .isMongoId()
+        .withMessage('Invalid brand id format'),
     validatorMiddleware,
 ]
 

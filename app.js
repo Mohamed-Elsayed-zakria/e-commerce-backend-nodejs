@@ -20,10 +20,10 @@ const port = process.env.PORT || 8000;
 // middleware
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
-  console.log(`Running in ${process.env.NODE_ENV} mode`);
-} else {
-  console.log(`Running in ${process.env.NODE_ENV} mode`)
+
 }
+
+console.log(`Running in ${process.env.NODE_ENV} mode`);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

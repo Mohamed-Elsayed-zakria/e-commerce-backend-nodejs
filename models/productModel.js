@@ -45,6 +45,14 @@ const productSchema = new mongoose.Schema(
             ref: "Category",
             required: [true, "product must belong to a category"],
         },
+        subCategories: {
+            type: [mongoose.Schema.ObjectId],
+            ref: "SubCategory",
+        },
+        brand: {
+            type: mongoose.Schema.ObjectId,
+            ref: "Brand",
+        },
         ratingsAverage: {
             type: Number,
             default: 4.5,
@@ -55,6 +63,7 @@ const productSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+
     },
     { timestamps: true }
 );

@@ -2,15 +2,25 @@ const productModel = require("../models/productModel");
 const asyncHandler = require('express-async-handler');
 const ApiError = require("../utils/apiError");
 const slugify = require("slugify");
+const { query } = require("express");
 
 // @desc get all products
 // @route GET /api/v1/products/
 // @access public
 exports.getAllProducts = asyncHandler(async (req, res) => {
+    // filter
+    const filterObj = { ...req.query };
+    const excludeFields = ["sort", "page", "limit"];
+    excludeFields.forEach((el) => delete filterObj[el]);
+
+    let filterString = JSON.stringify(filterObj);
+    filterString = filterString.replace(/\b(gt|gte|lt|lte)\b/g,(match) => `$${match}`);
+    queryStr = JSON.parse(filterString);
+
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 10;
     const skip = (page - 1) * limit;
-    const products = await productModel.find().skip(skip).limit(limit).populate("category");
+    const products = await productModel.find(queryStr).skip(skip).limit(limit).populate("category");
     res.status(200).json({
         result: products.length,
         pageNumber: page,
