@@ -9,12 +9,20 @@ const slugify = require("slugify");
 exports.getAllProducts = asyncHandler(async (req, res) => {
     // filter
     const filterObj = { ...req.query };
-    const excludeFields = ["sort", "page", "limit"];
+    const excludeFields = ["sort", "page", "limit", "fields", "keyword"];
     excludeFields.forEach((el) => delete filterObj[el]);
 
     let filterString = JSON.stringify(filterObj);
     filterString = filterString.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
     let queryStr = JSON.parse(filterString);
+
+    // search
+    if (req.query.keyword) {
+        queryStr.$or = [
+            { title: { $regex: req.query.keyword, $options: "i" } },
+            { description: { $regex: req.query.keyword, $options: "i" } }
+        ];
+    }
 
     // sorting
     let querySortStr = "-createdAt";
@@ -22,14 +30,23 @@ exports.getAllProducts = asyncHandler(async (req, res) => {
         querySortStr = req.query.sort.split(",").join(" ");
     }
 
+    // fields
+    let queryFields = "-__v";
+    if (req.query.fields) {
+        queryFields = req.query.fields.split(",").join(" ");
+    }
+
     // pagination
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 20;
     const skip = (page - 1) * limit;
+
     const products = await productModel.find(queryStr)
         .skip(skip).limit(limit)
-        .populate("category")
-        .sort(querySortStr);
+        .populate({ path: "category", select: "-__v" })
+        .sort(querySortStr)
+        .select(queryFields);
+
     res.status(200).json({
         result: products.length,
         pageNumber: page,
