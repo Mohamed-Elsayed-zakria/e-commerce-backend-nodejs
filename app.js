@@ -13,7 +13,8 @@ const app = express();
 const categoryRoute = require("./routers/categoryRoute");
 const subCategoryRoute = require("./routers/subCategoryRoute");
 const brandRoute = require("./routers/brandRoute");
-const ProductRoute = require("./routers/productRoute");
+const productRoute = require("./routers/productRoute");
+const userRoute = require("./routers/userRoute");
 
 const port = process.env.PORT || 8000;
 
@@ -36,7 +37,8 @@ app.get("/", (req, res) => {
 app.use("/api/v1/categories/", categoryRoute);
 app.use("/api/v1/subCategories/", subCategoryRoute);
 app.use("/api/v1/brands/", brandRoute);
-app.use("/api/v1/products/", ProductRoute);
+app.use("/api/v1/products/", productRoute);
+app.use("/api/v1/users/", userRoute);
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Can't find ${req.originalUrl} on this server`, 404));
