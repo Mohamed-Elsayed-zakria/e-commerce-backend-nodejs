@@ -15,6 +15,7 @@ const subCategoryRoute = require("./routers/subCategoryRoute");
 const brandRoute = require("./routers/brandRoute");
 const productRoute = require("./routers/productRoute");
 const userRoute = require("./routers/userRoute");
+const authRoute = require("./routers/authRoute");
 
 const port = process.env.PORT || 8000;
 
@@ -39,6 +40,7 @@ app.use("/api/v1/subCategories/", subCategoryRoute);
 app.use("/api/v1/brands/", brandRoute);
 app.use("/api/v1/products/", productRoute);
 app.use("/api/v1/users/", userRoute);
+app.use("/api/v1/auth/", authRoute);
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Can't find ${req.originalUrl} on this server`, 404));
