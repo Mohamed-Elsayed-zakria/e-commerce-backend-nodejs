@@ -71,6 +71,7 @@ exports.getOneProduct = asyncHandler(async (req, res, next) => {
 // @access private
 exports.createProduct = asyncHandler(async (req, res) => {
     const { title } = req.body;
+    req.body.imageCover = req.file.filename;
     req.body.slug = slugify(title);
     const product = await productModel.create(req.body);
     res.status(201).json({

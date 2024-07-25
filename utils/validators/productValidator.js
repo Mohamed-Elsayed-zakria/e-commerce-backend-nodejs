@@ -48,8 +48,12 @@ exports.createProductValidator = [
         .isArray()
         .withMessage('product colors must be an array'),
     check('imageCover')
-        .notEmpty()
-        .withMessage('product imageCover is required'),
+        .custom((value, { req }) => {
+            if (!req.file.path) {
+                throw new Error('product imageCover is required')
+            }
+            return true;
+        }),
     check('images')
         .optional()
         .isArray()

@@ -4,10 +4,14 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "config.env" });
 const morgan = require("morgan");
 const connectDB = require("./config/database");
+const path = require("path");
 
 // express
 const express = require("express");
 const app = express();
+
+// static files
+app.use(express.static(path.join(__dirname, "uploads/images")));
 
 // routes paths
 const categoryRoute = require("./routers/categoryRoute");
