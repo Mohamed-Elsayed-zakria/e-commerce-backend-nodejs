@@ -101,6 +101,8 @@ exports.updateUserValidator = [
     check('name')
         .notEmpty()
         .withMessage('user name is required'),
+    check('profilePic')
+        .optional(),
     check('role')
         .optional()
         .isIn(['user', 'admin'])

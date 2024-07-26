@@ -26,7 +26,7 @@ router.use("/:categoryId/subCategories", subCategoryRoute);
 router.get("/", getCategories);
 router.get("/:id", getOneCategoryValidator, getOneCategory);
 router.post("/", protect, createCategoryValidator, createCategory);
-router.put("/:id", updateCategoryValidator, updateCategory);
-router.delete("/:id", deleteCategoryValidator, deleteCategory);
+router.put("/:id",protect, updateCategoryValidator, updateCategory);
+router.delete("/:id",protect, deleteCategoryValidator, deleteCategory);
 
 module.exports = router;

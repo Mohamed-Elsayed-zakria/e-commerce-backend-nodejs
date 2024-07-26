@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema(
         passwordChangedAt: {
             type: Date
         },
+        profilePic: {
+            type: String
+        },
         role: {
             type: String,
             enum: ["admin", "user"],

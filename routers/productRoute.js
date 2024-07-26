@@ -13,6 +13,8 @@ const {
     deleteProductValidator,
 } = require("../utils/validators/productValidator");
 
+const { protect } = require("../services/authService");
+
 const upload = require("../middleware/upload_image");
 
 const express = require("express");
@@ -21,8 +23,8 @@ const router = express.Router();
 // routes
 router.get("/", getAllProducts);
 router.get("/:id", getOneProductValidator, getOneProduct);
-router.post("/", upload.single("imageCover"), createProductValidator, createProduct);
-router.put("/:id", updateProductValidator, updateProduct);
-router.delete("/:id", deleteProductValidator, deleteProduct);
+router.post("/", protect, upload.single("imageCover"), createProductValidator, createProduct);
+router.put("/:id", protect, updateProductValidator, updateProduct);
+router.delete("/:id", protect, deleteProductValidator, deleteProduct);
 
 module.exports = router;

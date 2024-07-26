@@ -8,6 +8,9 @@ const slugify = require("slugify");
 // @route POST /api/v1/users/
 // @access private
 exports.createUser = asyncHandler(async (req, res) => {
+    if (req.file.path) {
+        req.body.profilePic = req.file.filename;
+    }
     const { name } = req.body;
     const user = await UserModel.create({
         slug: slugify(name),

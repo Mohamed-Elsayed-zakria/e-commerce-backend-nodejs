@@ -15,15 +15,19 @@ const {
     changeUserPasswordValidator,
 } = require("../utils/validators/userValidator");
 
+const { protect } = require("../services/authService");
+
+const upload = require("../middleware/upload_image");
+
 const express = require("express");
 const router = express.Router();
 
 // routes
-router.get("/", getAllUsers);
-router.get("/:id", getOneUserValidator, getOneUser);
-router.post("/", createUserValidator, createUser);
-router.put("/:id", updateUserValidator, updateUser);
-router.put("/changePassword/:id",changeUserPasswordValidator, changeUserPassword);
-router.delete("/:id", deleteUserValidator, deleteUser);
+router.get("/", protect, getAllUsers);
+router.get("/:id", protect, getOneUserValidator, getOneUser);
+router.post("/", protect, upload.single('profilePic'), createUserValidator, createUser);
+router.put("/:id", protect, updateUserValidator, updateUser);
+router.put("/changePassword/:id", protect, changeUserPasswordValidator, changeUserPassword);
+router.delete("/:id", protect, deleteUserValidator, deleteUser);
 
 module.exports = router;
